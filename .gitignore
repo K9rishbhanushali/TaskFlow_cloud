@@ -1,0 +1,43 @@
+# ---- OS / editors ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# ---- Node / Vite ----
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+*.log
+npm-debug.log*
+
+# ---- Python / Flask ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+backend/venv/
+backend/instance/
+backend/*.db
+backend/*.sqlite
+.pytest_cache/
+.mypy_cache/
+
+# ---- Env / secrets (NEVER commit real secrets) ----
+.env
+backend/.env
+frontend/.env
+*.pem
+*.key
+
+# ---- Uploads / local file storage ----
+backend/uploads/
+backend/storage_local/
+
+# ---- Build / temp ----
+C:\\Users\\KRISH\\AppData\\Local\\Temp\\opencode/
+dist/
+build/

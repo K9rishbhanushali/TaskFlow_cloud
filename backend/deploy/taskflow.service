@@ -1,0 +1,17 @@
+# systemd unit for EC2 (Ubuntu). See docs/deployment.md for full steps.
+# Install: sudo cp deploy/taskflow.service /etc/systemd/system/taskflow.service
+# Then: sudo systemctl enable --now taskflow
+[Unit]
+Description=TaskFlow Cloud Flask API (gunicorn)
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/taskflow-cloud/backend
+EnvironmentFile=/home/ubuntu/taskflow-cloud/backend/.env
+ExecStart=/home/ubuntu/taskflow-cloud/backend/venv/bin/gunicorn --config gunicorn.conf.py run:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* TaskFlow Cloud — design tokens (Phase 2 dark glassmorphism) */
+:root {
+  --tf-bg: #06070c;
+  --tf-panel: rgba(255, 255, 255, 0.06);
+  --tf-border: rgba(255, 255, 255, 0.12);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 20% 0%, #1a1d29 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 20%, #14202e 0%, transparent 55%),
+    var(--tf-bg);
+  color: #e8eaf0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Reusable glass helpers (used alongside Tailwind utilities) */
+.tf-glass {
+  background: var(--tf-panel);
+  border: 1px solid var(--tf-border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.tf-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #e8eaf0;
+  outline: none;
+}
+
+.tf-input:focus {
+  border-color: rgba(125, 211, 252, 0.6);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.tf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.tf-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tf-btn-primary {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: #04060c;
+}
+
+.tf-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e8eaf0;
+}
+
+a {
+  color: #7dd3fc;
+}
