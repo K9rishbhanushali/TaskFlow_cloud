@@ -1,6 +1,4 @@
 
-// Central Axios client. Every service module uses this instance.
-// Base URL: VITE_API_BASE_URL (falls back to legacy VITE_API_URL).
 import axios from "axios";
 
 export const API_BASE_URL =
@@ -8,7 +6,10 @@ export const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
   "http://127.0.0.1:5000";
 
-const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 });
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 15000,
+});
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("tf_token");
@@ -22,6 +23,7 @@ api.interceptors.response.use(
     if (err.response?.status === 401 && localStorage.getItem("tf_token")) {
       localStorage.removeItem("tf_token");
       localStorage.removeItem("tf_user");
+
       if (!window.location.pathname.startsWith("/login")) {
         window.location.assign("/login");
       }
