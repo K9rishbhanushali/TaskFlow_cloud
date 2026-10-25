@@ -7,7 +7,6 @@ const LINKS = [
   { to: "/", label: "Dashboard" },
   { to: "/tasks", label: "All Tasks" },
   { to: "/tasks/new", label: "New Task" },
-  { to: "/notes", label: "Study Notes" },
   { to: "/profile", label: "Profile" },
 ];
 

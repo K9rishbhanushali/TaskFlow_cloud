@@ -34,18 +34,11 @@ def create_app(config_class=Config, config_overrides=None):
 
     from app.routes.auth import bp as auth_bp
     from app.routes.dashboard import bp as dashboard_bp
-    from app.routes.files import bp as files_bp
     from app.routes.tasks import bp as tasks_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(tasks_bp)
     app.register_blueprint(dashboard_bp)
-    app.register_blueprint(files_bp)
-
-    # Let our own validators (not Werkzeug) produce friendly size errors.
-    app.config["MAX_CONTENT_LENGTH"] = (
-        int(app.config.get("UPLOAD_MAX_MB", 5)) + 1
-    ) * 1024 * 1024
 
     @jwt.unauthorized_loader
     def _jwt_missing(reason):
@@ -85,11 +78,6 @@ def create_app(config_class=Config, config_overrides=None):
     @app.errorhandler(405)
     def method_not_allowed(_e):
         return jsonify(error="Method not allowed"), 405
-
-    @app.errorhandler(413)
-    def too_large(_e):
-        limit = app.config.get("UPLOAD_MAX_MB", 5)
-        return jsonify(error=f"File exceeds {limit} MB."), 413
 
     @app.errorhandler(500)
     def server_error(_e):

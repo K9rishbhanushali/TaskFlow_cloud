@@ -43,13 +43,4 @@ class Config:
 
     API_PREFIX = "/api"
 
-    # File uploads are stored on the application host's local disk.
-    UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "5"))
-    ALLOWED_EXTENSIONS = {
-        e.strip().lower()
-        for e in os.getenv("ALLOWED_EXTENSIONS", "pdf,txt,docx").split(",")
-        if e.strip()
-    }
-    LOCAL_UPLOAD_DIR = os.getenv("LOCAL_UPLOAD_DIR", "uploads")
-
 

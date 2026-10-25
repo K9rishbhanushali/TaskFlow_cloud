@@ -1,13 +1,9 @@
-"""Phase 8 API tests: auth, tasks, dashboard, files, access control.
+"""Phase 8 API tests: auth, tasks, dashboard, access control.
 
 Covers the spec checklist: registration, login, invalid credentials,
 duplicate email, task create/edit/delete/status, ownership isolation,
-dashboard stats, file type/size validation, file ownership, unauthorized
-access, and error shapes. Local SQLite and a temporary upload directory.
-by using a temporary local upload directory here.
+dashboard stats, unauthorized access, and error shapes.
 """
-import io
-
 import pytest
 
 from app import create_app
@@ -20,7 +16,6 @@ def client(tmp_path):
         config_overrides={
             "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
             "TESTING": True,
-            "LOCAL_UPLOAD_DIR": str(tmp_path / "uploads"),
             "JWT_SECRET_KEY": "test-secret-that-is-long-enough-for-hs256-123",
         }
     )
@@ -55,7 +50,6 @@ def test_register_login_me(client):
     # unknown user cannot reach private endpoints
     assert client.get("/api/tasks").status_code == 401
     assert client.get("/api/dashboard/stats").status_code == 401
-    assert client.get("/api/files").status_code == 401
 
 
 def test_register_validation(client):
@@ -120,46 +114,6 @@ def test_dashboard_stats_match_rows(client):
     assert stats["completion"] == 50
     assert [b["name"] for b in stats["by_status"]] == ["Pending", "In Progress", "Completed"]
 
-
-def test_file_validation_ownership_flow(client):
-    token = register(client).get_json()["access_token"]
-    h = auth_h(token)
-
-    # Unsupported type
-    bad = client.post(
-        "/api/files/upload",
-        data={"file": (io.BytesIO(b"evil"), "virus.exe")},
-        headers=h,
-        content_type="multipart/form-data",
-    )
-    assert bad.status_code == 400
-
-    # Oversized (limit is 5 MB in test config default)
-    big = client.post(
-        "/api/files/upload",
-        data={"file": (io.BytesIO(b"x" * (6 * 1024 * 1024)), "big.pdf")},
-        headers=h,
-        content_type="multipart/form-data",
-    )
-    assert big.status_code in (400, 413)
-
-    up = client.post(
-        "/api/files/upload",
-        data={"file": (io.BytesIO(b"%PDF-1.4 notes"), "notes.pdf")},
-        headers=h,
-        content_type="multipart/form-data",
-    )
-    assert up.status_code == 201
-    fid = up.get_json()["file"]["id"]
-
-    other = register(client, email="other@e.com").get_json()["access_token"]
-    assert client.get(f"/api/files/{fid}/download", headers=auth_h(other)).status_code == 404
-    assert client.delete(f"/api/files/{fid}", headers=auth_h(other)).status_code == 404
-
-    dl = client.get(f"/api/files/{fid}/download", headers=h)
-    assert dl.status_code == 200
-    assert client.delete(f"/api/files/{fid}", headers=h).status_code == 200
-    assert client.get(f"/api/files/{fid}/download", headers=h).status_code == 404
 
 
 def test_error_shapes_are_json(client):

@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Tasks from "./pages/Tasks.jsx";
 import TaskDetail from "./pages/TaskDetail.jsx";
 import TaskFormPage from "./pages/TaskFormPage.jsx";
-import Notes from "./pages/Notes.jsx";
 import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
@@ -30,7 +29,6 @@ export default function App() {
         <Route path="tasks/new" element={<TaskFormPage />} />
         <Route path="tasks/:id" element={<TaskDetail />} />
         <Route path="tasks/:id/edit" element={<TaskFormPage />} />
-        <Route path="notes" element={<Notes />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 

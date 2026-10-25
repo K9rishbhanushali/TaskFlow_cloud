@@ -36,9 +36,6 @@ class Task(db.Model):
     )
 
     owner = db.relationship("User", back_populates="tasks")
-    # Files linked to this task. If the task is deleted, files SURVIVE but
-    # their task_id is set to NULL (documented deletion behavior).
-    files = db.relationship("StudyFile", back_populates="task", lazy="selectin")
 
     @property
     def is_overdue(self):

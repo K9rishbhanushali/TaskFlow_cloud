@@ -6,7 +6,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy import or_
 
 from app.extensions import db
-from app.models import StudyFile, Task
+from app.models import Task
 from app.services import check_task_payload, parse_due_date
 
 bp = Blueprint("tasks", __name__, url_prefix="/api/tasks")
@@ -128,8 +128,6 @@ def delete_task(task_id):
     task = _get_owned(task_id)
     if not task:
         return jsonify(error="Task not found."), 404
-    # Documented behavior: linked files survive; their task link is cleared.
-    StudyFile.query.filter_by(task_id=task.id, user_id=_uid()).update({"task_id": None})
     db.session.delete(task)
     db.session.commit()
     return jsonify(message="Task deleted."), 200

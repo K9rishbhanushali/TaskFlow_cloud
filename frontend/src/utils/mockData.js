@@ -71,25 +71,6 @@ export const MOCK_TASKS = [
   },
 ];
 
-export const MOCK_FILES = [
-  {
-    id: 1,
-    original_filename: "dbms-ch7-notes.pdf",
-    file_size: 184320,
-    content_type: "application/pdf",
-    uploaded_at: daysFromNow(-3),
-    task_id: 1,
-  },
-  {
-    id: 2,
-    original_filename: "laplace-formulas.txt",
-    file_size: 4210,
-    content_type: "text/plain",
-    uploaded_at: daysFromNow(-4),
-    task_id: null,
-  },
-];
-
 function daysFromNow(n) {
   const d = new Date();
   d.setDate(d.getDate() + n);

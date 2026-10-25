@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app import create_app
 from app.extensions import db
-from app.models import StudyFile, Task, User
+from app.models import Task, User
 
 
 @pytest.fixture
@@ -68,28 +68,3 @@ def test_task_overdue_rule(app_ctx):
 
     assert overdue.is_overdue is True
     assert done_late.is_overdue is False
-
-
-def test_deleting_task_keeps_file_with_null_task(app_ctx):
-    u = User(name="File", email="file@college.edu")
-    u.set_password("password1")
-    db.session.add(u)
-    db.session.commit()
-
-    t = Task(user_id=u.id, title="With file", status="Pending")
-    db.session.add(t)
-    db.session.commit()
-
-    f = StudyFile(
-        user_id=u.id, task_id=t.id, original_filename="notes.pdf",
-        storage_key="test/unique-key-1", file_size=100,
-    )
-    db.session.add(f)
-    db.session.commit()
-
-    db.session.delete(t)
-    db.session.commit()
-
-    kept = StudyFile.query.one()
-    assert kept.task_id is None
-    assert kept.original_filename == "notes.pdf"

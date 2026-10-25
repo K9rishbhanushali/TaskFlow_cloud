@@ -75,7 +75,7 @@ export default function TaskDetail() {
       <ConfirmDialog
         open={confirm}
         title="Delete this task?"
-        message={`"${task.title}" will be permanently removed. Linked files are kept.`}
+        message={`"${task.title}" will be permanently removed.`}
         confirmLabel={deleting ? "Deleting…" : "Delete"}
         onCancel={() => setConfirm(false)}
         onConfirm={remove}

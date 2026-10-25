@@ -17,13 +17,10 @@ class User(db.Model):
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
     )
 
-    # One user owns many tasks/files. Deleting a user removes their rows
-    # (cascade) so no orphaned tasks/files are left behind.
+    # One user owns many tasks. Deleting a user removes their rows
+    # (cascade) so no orphaned tasks are left behind.
     tasks = db.relationship(
         "Task", back_populates="owner", cascade="all, delete-orphan", lazy="selectin"
-    )
-    files = db.relationship(
-        "StudyFile", back_populates="owner", cascade="all, delete-orphan", lazy="selectin"
     )
 
     def set_password(self, plain_password):
