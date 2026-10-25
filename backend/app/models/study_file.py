@@ -1,8 +1,8 @@
 """StudyFiles table: metadata for uploaded study documents.
 
-The actual bytes live in local disk (Phase 7) or S3 (Phase 9).
+The actual bytes live on local disk.
 This table only stores metadata + the storage key, so the same rows
-work with SQLite/local dev and PostgreSQL/S3 in the cloud.
+work with SQLite locally and PostgreSQL in the cloud.
 """
 from datetime import datetime
 

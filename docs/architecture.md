@@ -9,7 +9,7 @@ AWS Amplify — React + Vite SPA (Tailwind, Router, Axios, Recharts)
         v
 Amazon EC2 — Flask + Gunicorn (behind Nginx, HTTPS)
         |-- Amazon RDS for PostgreSQL (users, tasks, study_files metadata)
-        |-- Amazon S3 private bucket (study-file bytes, presigned downloads)
+        |-- Local disk (study-file bytes)
 ```
 
 Local development mirrors this with cheaper parts:
@@ -29,9 +29,8 @@ Vite :5173 --> Flask :5000 (/api/*) --> SQLite (instance/taskflow.db)
 - **RDS for PostgreSQL** — managed relational DB for the same SQLAlchemy models
   used with SQLite locally (`DATABASE_URL` switch). Lives in private subnets;
   only the EC2 security group may reach port 5432.
-- **S3** — durable store for uploaded bytes; the DB keeps only metadata +
-  `storage_key`. Bucket is private; downloads use 15-minute presigned URLs
-  (or authenticated streaming for local mode).
+- **Local disk** — stores uploaded bytes on the application host; the database
+  keeps only metadata and the `storage_key` used to locate each file.
 
 ## Data flows
 
@@ -40,15 +39,14 @@ Vite :5173 --> Flask :5000 (/api/*) --> SQLite (instance/taskflow.db)
 2. **Tasks** — CRUD + dashboard stats are ownership-scoped by the JWT identity;
    `user_id` is never accepted from the client.
 3. **Files** — upload validates extension/size/MIME, writes bytes via the
-   storage adapter (local disk or S3) under a UUID key, then commits metadata.
+   local storage adapter under a UUID key, then commits metadata.
    Storage failures never leave orphan metadata rows (rollback deletes bytes).
    Deleting a task keeps its files (`task_id` set to NULL); deleting a user
    cascades their tasks and files.
 
 ## Security notes
 
-- IAM role on EC2 for S3 (no access keys in code or git); secrets only via
-  environment / Secrets Manager; `.env` files are git-ignored.
+- Secrets only via environment / Secrets Manager; `.env` files are git-ignored.
 - CORS allow-lists exact origins; JWT expiry + 401 logout on the client.
 - Passwords are bcrypt hashes; hashes never appear in API responses.
 - Central JSON error handlers never leak tracebacks, paths, or tokens.

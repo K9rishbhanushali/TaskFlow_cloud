@@ -43,8 +43,7 @@ class Config:
 
     API_PREFIX = "/api"
 
-    # File uploads (Phase 7 local adapter, Phase 9 S3 adapter)
-    STORAGE_BACKEND = os.getenv("STORAGE_BACKEND", "local")  # local | s3
+    # File uploads are stored on the application host's local disk.
     UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "5"))
     ALLOWED_EXTENSIONS = {
         e.strip().lower()
@@ -53,7 +52,4 @@ class Config:
     }
     LOCAL_UPLOAD_DIR = os.getenv("LOCAL_UPLOAD_DIR", "uploads")
 
-    # S3 (only used when STORAGE_BACKEND=s3; IAM role preferred over keys)
-    S3_BUCKET = os.getenv("S3_BUCKET", "")
-    S3_REGION = os.getenv("S3_REGION", "")
-    S3_PREFIX = os.getenv("S3_PREFIX", "study-files/")
+

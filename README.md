@@ -1,6 +1,6 @@
 # TaskFlow Cloud — Cloud-Based Student Task and Study Management System
 
-Full-stack app: **React (Vite) + Flask + SQLite/PostgreSQL + local disk/S3**.
+Full-stack app: **React (Vite) + Flask + SQLite/PostgreSQL + local disk storage**.
 All features are wired end-to-end — no mock data remains in the app.
 
 ## What it does
@@ -11,7 +11,7 @@ All features are wired end-to-end — no mock data remains in the app.
 - Dashboard: totals, completion %, upcoming deadlines, recent tasks, status
   charts — all from `GET /api/dashboard/stats`.
 - Study notes: upload/download/delete PDF/TXT/DOCX (5 MB), validated client
-  and server side; bytes in local disk (dev) or private S3 (cloud).
+  and server side; bytes are stored on the application host's local disk.
 
 ## Project layout
 
@@ -19,7 +19,7 @@ All features are wired end-to-end — no mock data remains in the app.
 frontend/src/  components/ pages/ layouts/ services/ (api, auth, task,
                dashboard, file) context/ hooks/ utils/ App.jsx main.jsx
 backend/app/   routes/ (auth, tasks, dashboard, files) models/ (User, Task,
-               StudyFile) services/ (validation) storage/ (local, s3)
+               StudyFile) services/ (validation) storage/ (local)
 backend/       config.py run.py seed_demo.py requirements.txt
                deploy/ (systemd, nginx) .env.example .env.production.example
 docs/          architecture.md api.md deployment.md submission.md
@@ -65,7 +65,7 @@ logout → `/` redirects to login.
 ## AWS (configured, documented — not deployed from here)
 
 `docs/deployment.md` + `backend/deploy/` + `amplify.yml` cover RDS
-PostgreSQL, EC2 (Gunicorn/systemd/Nginx + IAM role), private S3, and Amplify
+PostgreSQL, EC2 (Gunicorn/systemd/Nginx), and Amplify
 hosting, plus cost cleanup. Live deployment needs your AWS account; nothing
 here creates paid resources on its own.
 

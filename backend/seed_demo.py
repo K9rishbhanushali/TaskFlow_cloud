@@ -25,7 +25,7 @@ with app.app_context():
         db.session.commit()
         samples = [
             ("DBMS Assignment 4 — Normalization", "DBMS", "High", "Pending", "2026-11-05"),
-            ("Cloud Lab — S3 static website", "Cloud Computing", "Medium", "In Progress", "2026-11-08"),
+            ("Cloud Lab — Static website deployment", "Cloud Computing", "Medium", "In Progress", "2026-11-08"),
             ("Maths revision — Laplace transforms", "Maths", "Medium", "Completed", "2026-10-20"),
             ("OS report — paging vs segmentation", "Operating Systems", "Low", "Pending", "2026-10-28"),
         ]

@@ -3,8 +3,8 @@
 Covers the spec checklist: registration, login, invalid credentials,
 duplicate email, task create/edit/delete/status, ownership isolation,
 dashboard stats, file type/size validation, file ownership, unauthorized
-access, and error shapes. Local SQLite + temp upload dir; S3 is mocked
-by simply using STORAGE_BACKEND=local here.
+access, and error shapes. Local SQLite and a temporary upload directory.
+by using a temporary local upload directory here.
 """
 import io
 

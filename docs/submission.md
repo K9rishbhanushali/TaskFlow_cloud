@@ -7,8 +7,7 @@ React dashboard lets students register, log in, manage study tasks with
 deadlines and priorities, track completion statistics with charts, and
 upload/download study documents. A Flask REST API with JWT authentication
 serves the data from a relational database (SQLite locally, PostgreSQL on
-AWS RDS), storing file bytes in private storage (local disk locally,
-Amazon S3 in the cloud).
+AWS RDS), storing study-file bytes on the application host's local disk.
 
 ## Problem statement
 
@@ -28,7 +27,8 @@ for tasks, deadlines, progress, and documents solves this.
 
 ## Proposed solution
 
-A three-tier system: React SPA (Amplify) → Flask API (EC2) → RDS + S3.
+A three-tier system: React SPA (Amplify) → Flask API (EC2) → RDS, with
+application-host local storage for uploaded study files.
 Local development uses the same code with SQLite + local disk, so the
 evaluator can run everything without AWS.
 
@@ -48,12 +48,13 @@ evaluator can run everything without AWS.
 - Responsive (desktop/tablet/mobile), accessible labels, keyboard navigation.
 - JWT expiry; bcrypt passwords; ownership checks on every private endpoint.
 - Same models on SQLite and PostgreSQL; migrations (no `create_all` in prod).
-- Private S3 bucket, IAM roles, HTTPS, least-privilege security groups.
+- HTTPS and least-privilege security groups for the production API and database.
 
 ## AWS services used
 
-Amplify (frontend hosting), EC2 (Flask + Gunicorn + Nginx), RDS PostgreSQL
-(users/tasks/file metadata), S3 (private file bytes). See `architecture.md`.
+Amplify (frontend hosting), EC2 (Flask + Gunicorn + Nginx), and RDS PostgreSQL
+(users, tasks and file metadata). Study-file bytes remain on the EC2 host.
+See `architecture.md`.
 
 ## Database schema
 
@@ -90,7 +91,7 @@ download → delete (see README).
 
 Password reset, task sharing/reminders, full-text subject management,
 file previews, pagination UI, refresh-token rotation, HttpOnly-cookie auth,
-CI pipeline, CloudFront + ALB, RDS backups/alarms.
+CI pipeline, CloudFront + ALB, RDS backups/alarms and a future managed-file-storage review.
 
 ## Conclusion
 

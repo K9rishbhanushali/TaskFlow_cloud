@@ -1,11 +1,9 @@
-"""Study-file endpoints. Bytes live in storage (local/S3); only
-metadata lives in PostgreSQL/SQLite. Ownership is checked on every op.
-"""
+"""Study-file endpoints backed by local disk and metadata in the database."""
 import imghdr  # noqa: F401  (reserved for future magic-byte checks)
 import uuid
 from pathlib import Path
 
-from flask import Blueprint, current_app, jsonify, redirect, request, send_file
+from flask import Blueprint, current_app, jsonify, request, send_file
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from werkzeug.utils import secure_filename
 
@@ -16,7 +14,7 @@ from app.storage import get_storage
 bp = Blueprint("files", __name__, url_prefix="/api/files")
 
 # Extension -> expected MIME. The declared MIME is never trusted alone:
-# both must agree, and S3/local keys always use our UUID, not user paths.
+# both must agree, and local keys always use our UUID, not user paths.
 MIME_BY_EXT = {
     "pdf": "application/pdf",
     "txt": "text/plain",
@@ -124,9 +122,6 @@ def download(file_id):
     if not record:
         return jsonify(error="File not found."), 404
     storage = get_storage()
-    if storage.name == "s3":
-        # Private bucket: browser is redirected to a 15-min presigned URL.
-        return redirect(storage.presigned_url(record.storage_key, record.original_filename), code=302)
     try:
         handle = storage.open(record.storage_key)
     except FileNotFoundError:

@@ -54,5 +54,5 @@ is_overdue, created_at, updated_at}`.
   Allowed: `ALLOWED_EXTENSIONS` (default pdf/txt/docx), max `UPLOAD_MAX_MB`
   (default 5). MIME/extension mismatch → `400`.
 - `GET /api/files/<id>/download` → file bytes (local) or `302` to a 15-min
-  S3 presigned URL (cloud). Foreign id → `404`; content missing → `410`.
+  file bytes from local storage. Foreign id → `404`; content missing → `410`.
 - `DELETE /api/files/<id>` → `200 {message}` (storage object + row removed).

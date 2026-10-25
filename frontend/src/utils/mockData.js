@@ -21,8 +21,8 @@ export const MOCK_TASKS = [
   },
   {
     id: 2,
-    title: "Cloud Lab — S3 static website",
-    description: "Host a static page on S3 and note the endpoint URL.",
+    title: "Cloud Lab — Static website deployment",
+    description: "Document the deployment endpoint and required configuration.",
     subject: "Cloud Computing",
     priority: "Medium",
     status: "In Progress",

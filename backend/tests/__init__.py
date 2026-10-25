@@ -1,1 +1,1 @@
-# Placeholder for Phase 6: automated tests (pytest + local SQLite, mocked S3).
+# Automated tests use pytest, local SQLite and temporary local storage.

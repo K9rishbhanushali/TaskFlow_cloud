@@ -1,5 +1,5 @@
 # TaskFlow Cloud — Backend dependencies (Phase 3)
-# Local dev: SQLite + local file storage. Cloud: PostgreSQL (RDS) + S3.
+# Local file storage. Cloud database option: PostgreSQL on RDS.
 # Install: pip install -r requirements.txt
 Flask==3.1.0
 Flask-CORS==5.0.0
@@ -8,7 +8,6 @@ Flask-Migrate==4.1.0
 Flask-JWT-Extended==4.7.1
 Flask-Bcrypt==1.0.1
 python-dotenv==1.0.1
-boto3==1.34.162
 psycopg2-binary==2.9.10
 gunicorn==23.0.0
 pytest==8.3.4
